@@ -18,7 +18,7 @@ def displayStats(datasetFile):
         mediane = round(computeMedian(datasetFile, col), 2)
         mode = computeMode(datasetFile, col)
         mode_affiche = round(mode, 2) if isinstance(mode, (int, float)) else mode
-        print(f"{noms[col]:<20} → Moyenne: {moyenne} | Médiane: {mediane} | Mode: {mode_affiche}")
+        print(f"{noms[col]:<20} → Moyenne : {moyenne} | Median : {mediane} | Mode : {mode_affiche}")
 
 def computeMean(datasetFile, column):
     return datasetFile[column].mean()
