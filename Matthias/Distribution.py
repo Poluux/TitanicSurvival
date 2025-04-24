@@ -26,9 +26,22 @@ def displayDistribution(column):
     plt.tight_layout()
     plt.show()
 
+def displayCheeseDistribution(column):
+    counts = df[column].value_counts()
+    labels = counts.index
+    sizes = counts.values
+
+    plt.figure(figsize=(6, 6))
+    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=sns.color_palette("pastel"))
+    plt.title(f"{column} distribution")
+    plt.axis('equal')
+    plt.tight_layout()
+    plt.show()
+
 columns = ["Survived", "Pclass", "Sex", "SibSp", "Parch", "Embarked"]
 for column in columns:
-    displayDistribution(column)
+    # displayDistribution(column)
+    displayCheeseDistribution(column)
 
 # We differatiate the display of the age distribution from the other distributions
 # because we group passengers by slice of 5 years
