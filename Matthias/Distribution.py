@@ -40,7 +40,7 @@ def displayCheeseDistribution(column):
 
 columns = ["Survived", "Pclass", "Sex", "SibSp", "Parch", "Embarked"]
 for column in columns:
-    # displayDistribution(column)
+    displayDistribution(column)
     displayCheeseDistribution(column)
 
 # We differatiate the display of the age distribution from the other distributions
