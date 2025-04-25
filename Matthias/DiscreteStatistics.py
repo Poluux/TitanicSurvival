@@ -14,22 +14,39 @@ def displayStats(datasetFile):
     }
 
     for col in colonnes:
-        moyenne = round(computeMean(datasetFile, col), 2)
-        mediane = round(computeMedian(datasetFile, col), 2)
-        mode = computeMode(datasetFile, col)
+        data = datasetFile[col].dropna()
+        moyenne = round(computeMean(data), 2)
+        mediane = round(computeMedian(data), 2)
+        mode = computeMode(data)
         mode_affiche = round(mode, 2) if isinstance(mode, (int, float)) else mode
-        print(f"{noms[col]:<20} → Moyenne : {moyenne} | Median : {mediane} | Mode : {mode_affiche}")
+        etendue = round(computeRange(data), 2)
+        variance = round(computeVariance(data), 2)
+        std_dev = round(computeStdDev(data), 2)
 
-def computeMean(datasetFile, column):
-    return datasetFile[column].mean()
+        print(f"{noms[col]:<20} → Moyenne : {moyenne} | Médiane : {mediane} | Mode : {mode_affiche} | "
+              f"Range : {etendue} | Variance : {variance} | Std Dev : {std_dev}")
 
-def computeMedian(datasetFile, column):
-    return datasetFile[column].median()
+def computeMean(data):
+    return data.mean()
 
-def computeMode(datasetFile, column):
-    mode_series = datasetFile[column].mode()
+def computeMedian(data):
+    return data.median()
+
+def computeMode(data):
+    mode_series = data.mode()
     return mode_series.iloc[0] if not mode_series.empty else "N/A"
 
+def computeRange(data):
+    return data.max() - data.min()
+
+def computeVariance(data):
+    return data.var()
+
+def computeStdDev(data):
+    return data.std()
+
+# Chargement des données
 datasetFile = pd.read_csv("../Project 2_Titanic-Dataset.csv")
 
+# Affichage des statistiques
 displayStats(datasetFile)
