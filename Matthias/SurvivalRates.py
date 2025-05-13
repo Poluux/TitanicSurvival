@@ -72,8 +72,66 @@ def plot_survival_by_cabin(df):
     plt.legend(title="Survived", labels=["No", "Yes"])
     plt.tight_layout()
 
+# Survival rate by Fare price
+def plot_survival_counts_by_fare(df):
+    df_fare = df.dropna(subset=["Fare", "Survived"])
+
+    # Créer des tranches de 25£
+    max_fare = int(df_fare["Fare"].max()) + 25
+    bins = range(0, max_fare, 25)
+    df_fare["FareGroup"] = pd.cut(df_fare["Fare"], bins=bins, right=False)
+
+    # Regroupement des données
+    grouped = df_fare.groupby(["FareGroup", "Survived"]).size().unstack(fill_value=0)
+
+    # Tracé
+    ax = grouped.plot(kind="bar", figsize=(12, 6), color=["salmon", "skyblue"], edgecolor="black")
+
+    plt.title("Survivants et morts par tranche de prix payé (£25)")
+    plt.xlabel("Tranche de prix (Fare)")
+    plt.ylabel("Nombre de passagers")
+    plt.xticks(rotation=45)
+    plt.legend(title="Survived", labels=["Non", "Oui"])
+    plt.tight_layout()
+
+    # Ajout des annotations au-dessus de chaque barre
+    for container in ax.containers:
+        for bar in container:
+            height = bar.get_height()
+            if height > 0:
+                ax.annotate(f'{int(height)}',
+                            xy=(bar.get_x() + bar.get_width() / 2, height),
+                            xytext=(0, 3),  # décalage vertical
+                            textcoords="offset points",
+                            ha='center', va='bottom', fontsize=9)
+
+    plt.show()
+
+def plot_survival_rate_by_feature(df, feature):
+    # Grouper et calculer le taux de survie pour chaque valeur
+    grouped = df.groupby(feature)['Survived'].mean() * 100  # Pourcentage
+    counts = df[feature].value_counts().sort_index()
+
+    plt.figure(figsize=(8, 5))
+    sns.barplot(x=grouped.index, y=grouped.values, palette="coolwarm")
+
+    # Annoter les barres avec le pourcentage
+    for i, value in enumerate(grouped.values):
+        plt.text(i, value + 1, f"{value:.1f}%", ha='center')
+
+    plt.title(f"Taux de survie en fonction de {feature}")
+    plt.xlabel(feature)
+    plt.ylabel("Taux de survie (%)")
+    plt.tight_layout()
+    plt.show()
+
 # Affichage des graphiques
 
 plotSurvivalBySexWithPercent()
 plot_age_groups_by_survival(df)
 plot_survival_by_cabin(df)
+plot_survival_counts_by_fare(df)
+plot_survival_rate_by_feature(df, "SibSp")
+plot_survival_rate_by_feature(df, "Parch")
+
+
