@@ -17,6 +17,28 @@ def displayAgeDistribution():
 
 displayAgeDistribution()
 
+def displayFareDistribution():
+    df_fare = df.dropna(subset=["Fare"])
+    max_fare = int(df_fare["Fare"].max()) + 25
+    bins = range(0, max_fare, 25)
+
+    # Créer histogramme et récupérer les valeurs
+    counts, bin_edges, patches = plt.hist(df_fare["Fare"], bins=bins, color="lightgreen", edgecolor="black")
+
+    # Afficher les étiquettes au sommet de chaque barre
+    for count, edge in zip(counts, bin_edges[:-1]):
+        if count > 0:
+            plt.text(edge + 12.5, count + 1, str(int(count)), ha='center', va='bottom', fontsize=9)
+
+    plt.title("Fare distribution (by £25 bins)")
+    plt.xlabel("Fare (£)")
+    plt.ylabel("Number of passengers")
+    plt.xticks(bins, rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+displayFareDistribution()
+
 def displayDistribution(column):
     plt.figure(figsize=(6, 4))
     sns.countplot(data=df, x=column, palette="pastel", order=df[column].value_counts().index)
