@@ -135,3 +135,4 @@ plot_survival_rate_by_feature(df, "SibSp")
 plot_survival_rate_by_feature(df, "Parch")
 
 
+
