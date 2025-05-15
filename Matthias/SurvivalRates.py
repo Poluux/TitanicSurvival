@@ -62,6 +62,31 @@ def plot_age_groups_by_survival(df):
 df['Cabin'] = df['Cabin'].fillna('Unknown')  # Remplacer les valeurs manquantes par 'Unknown'
 df['Cabin'] = df['Cabin'].str.extract('([A-Za-z])')  # Garder seulement la lettre (indicateur de section)
 
+def plot_survival_rate_by_age_group(df):
+    df_age = df.dropna(subset=["Age", "Survived"])
+
+    # Création des tranches d'âge (groupes de 5 ans)
+    bins = range(0, int(df_age["Age"].max()) + 5, 5)
+    df_age["AgeGroup"] = pd.cut(df_age["Age"], bins=bins, right=False)
+
+    # Calcul du taux de survie (%)
+    survival_rate = df_age.groupby("AgeGroup")["Survived"].mean() * 100
+
+    # Tracé
+    plt.figure(figsize=(12, 6))
+    ax = sns.barplot(x=survival_rate.index.astype(str), y=survival_rate.values, color="mediumseagreen")
+
+    # Ajout des annotations
+    for i, rate in enumerate(survival_rate.values):
+        plt.text(i, rate + 1, f"{rate:.1f}%", ha='center')
+
+    plt.title("Taux de survie (%) par tranche d'âge (5 ans)")
+    plt.xlabel("Tranche d'âge")
+    plt.ylabel("Taux de survie (%)")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
 # Graphique : survie par section de cabine
 def plot_survival_by_cabin(df):
     plt.figure(figsize=(12, 6))
@@ -129,6 +154,7 @@ def plot_survival_rate_by_feature(df, feature):
 
 plotSurvivalBySexWithPercent()
 plot_age_groups_by_survival(df)
+plot_survival_rate_by_age_group(df)
 plot_survival_by_cabin(df)
 plot_survival_counts_by_fare(df)
 plot_survival_rate_by_feature(df, "SibSp")
