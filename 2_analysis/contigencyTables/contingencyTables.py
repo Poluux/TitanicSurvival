@@ -1,6 +1,9 @@
 import pandas as pd
 from tabulate import tabulate
 
+# This file creates contingency tables for some interesting pairs of fields
+# We can see the result both in absolute value and in percentage.
+
 df = pd.read_csv("../Project 2_Titanic-Dataset.csv")
 
 def displayContingencyTable(column1, column2):
@@ -24,5 +27,4 @@ def displayContingency(column1, column2):
 displayContingency("Sex", "Survived")
 displayContingency("Pclass", "Survived")
 displayContingency("Embarked", "Survived")
-
 displayContingency("Embarked", "Pclass")

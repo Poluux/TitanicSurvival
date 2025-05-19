@@ -2,6 +2,11 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+
+# This file creates some vizualization of the survival rate
+# in function of the other paramaters.
+
+
 # Chargement des données
 df = pd.read_csv("../Project 2_Titanic-Dataset.csv")
 
@@ -80,9 +85,9 @@ def plot_survival_rate_by_age_group(df):
     for i, rate in enumerate(survival_rate.values):
         plt.text(i, rate + 1, f"{rate:.1f}%", ha='center')
 
-    plt.title("Taux de survie (%) par tranche d'âge (5 ans)")
-    plt.xlabel("Tranche d'âge")
-    plt.ylabel("Taux de survie (%)")
+    plt.title("Survival rate (%) by range of 5 years")
+    plt.xlabel("Age range")
+    plt.ylabel("Survival rate")
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
@@ -112,11 +117,11 @@ def plot_survival_counts_by_fare(df):
     # Tracé
     ax = grouped.plot(kind="bar", figsize=(12, 6), color=["salmon", "skyblue"], edgecolor="black")
 
-    plt.title("Survivants et morts par tranche de prix payé (£25)")
-    plt.xlabel("Tranche de prix (Fare)")
-    plt.ylabel("Nombre de passagers")
+    plt.title("Survival rate by fare range (£25)")
+    plt.xlabel("Fare range (Fare)")
+    plt.ylabel("Number of passengers")
     plt.xticks(rotation=45)
-    plt.legend(title="Survived", labels=["Non", "Oui"])
+    plt.legend(title="Survived", labels=["Yes", "No"])
     plt.tight_layout()
 
     # Ajout des annotations au-dessus de chaque barre
@@ -144,9 +149,9 @@ def plot_survival_rate_by_feature(df, feature):
     for i, value in enumerate(grouped.values):
         plt.text(i, value + 1, f"{value:.1f}%", ha='center')
 
-    plt.title(f"Taux de survie en fonction de {feature}")
+    plt.title(f"Survival rate in function of{feature}")
     plt.xlabel(feature)
-    plt.ylabel("Taux de survie (%)")
+    plt.ylabel("Survival rate (%)")
     plt.tight_layout()
     plt.show()
 

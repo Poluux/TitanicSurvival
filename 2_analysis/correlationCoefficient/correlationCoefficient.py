@@ -17,7 +17,7 @@ df_model = df_model.dropna(subset=cols)
 variables = ['Pclass', 'Sex', 'Age', 'Fare', 'SibSp', 'Parch']
 target = 'Survived'
 
-print("Corrélation entre chaque variable et Survived :\n")
+print("Correlation between each variable and Survived :\n")
 for var in variables:
     corr = df_model[var].corr(df_model[target])
     print(f"{var}: Corrélation = {corr:.3f}")

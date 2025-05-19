@@ -1,5 +1,9 @@
 import pandas as pd
 
+# This file computes discrete statistics on all numerical variable.
+
+datasetFile = pd.read_csv("../Project 2_Titanic-Dataset.csv")
+
 def displayStats(datasetFile):
     print("Statistiques :\n")
 
@@ -8,8 +12,8 @@ def displayStats(datasetFile):
         "Survived": "Survival rate",
         "Pclass": "Ticket class",
         "Age": "Age",
-        "SibSp": "Siblings/Spouses",
-        "Parch": "Parents/Children",
+        "SibSp": "Siblings / Spouses",
+        "Parch": "Parents / Children",
         "Fare": "Fare"
     }
 
@@ -23,8 +27,8 @@ def displayStats(datasetFile):
         variance = round(computeVariance(data), 2)
         std_dev = round(computeStdDev(data), 2)
 
-        print(f"{noms[col]:<20} → Moyenne : {moyenne} | Médiane : {mediane} | Mode : {mode_affiche} | "
-              f"Range : {etendue} | Variance : {variance} | Std Dev : {std_dev}")
+        print(f"{noms[col]:<20} → Mean : {moyenne} | Mediane : {mediane} | Mode : {mode_affiche} | "
+              f"Range : {etendue} | Variance : {variance} | Standard Deviation : {std_dev}")
 
 def computeMean(data):
     return data.mean()
@@ -45,8 +49,4 @@ def computeVariance(data):
 def computeStdDev(data):
     return data.std()
 
-# Chargement des données
-datasetFile = pd.read_csv("../Project 2_Titanic-Dataset.csv")
-
-# Affichage des statistiques
 displayStats(datasetFile)
