@@ -5,6 +5,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from mpl_toolkits.mplot3d import Axes3D
+import joblib
+from matplotlib import animation
 
 # Chargement des données
 df = pd.read_csv("../Project 2_Titanic-Dataset.csv")
@@ -72,9 +74,18 @@ fig = plt.figure(figsize=(10, 6))
 ax = fig.add_subplot(111, projection='3d')
 ax.plot_surface(Pclass_grid, Age_grid * 5, Proba_grid, cmap="coolwarm", edgecolor='k', alpha=0.8)
 
-ax.set_xlabel("Classe")
-ax.set_ylabel("Âge (années)")
-ax.set_zlabel("Probabilité de survie")
-ax.set_title("Probabilité de survie selon la classe et l'âge (Sexe = Femme)")
+ax.set_xlabel("Class")
+ax.set_ylabel("Age (year)")
+ax.set_zlabel("Survival probability")
+ax.set_title("Survival probablity according to age and class (Sex = Female)")
 plt.tight_layout()
+
+def rotate(angle):
+    ax.view_init(elev=30, azim=angle)
+ 
+# Création de l'animation
+ani = animation.FuncAnimation(fig, rotate, frames=np.arange(0, 360, 2), interval=100)
+ 
+ani.save("rotation_survival.gif", writer="pillow", fps=20)
+ 
 plt.show()
