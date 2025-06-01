@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
-from sklearn.preprocessing import StandardScaler
 from mpl_toolkits.mplot3d import Axes3D
 
 # Chargement des données
@@ -33,6 +32,13 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 model = LogisticRegression()
 model.fit(X_train, y_train)
 
+# Afficher l'équation du modèle
+coef = model.coef_[0]
+intercept = model.intercept_[0]
+print("\nÉquation du modèle (logit) :")
+print(f"logit(p) = {intercept:.4f} + ({coef[0]:.4f} * Sex) + ({coef[1]:.4f} * Pclass) + ({coef[2]:.4f} * AgeGroup)")
+print("Probabilité prédite : p = 1 / (1 + exp(-logit(p)))")
+
 # Évaluation
 y_pred = model.predict(X_test)
 print("\n--- Régression logistique avec SEX + Pclass + AgeGroup ---")
@@ -54,8 +60,11 @@ Age_flat = Age_grid.ravel()
 # Créer les entrées avec Sexe fixé
 X_grid = np.column_stack([np.full_like(Pclass_flat, fixed_sex), Pclass_flat, Age_flat])
 
+# Convertir en DataFrame avec les bons noms de colonnes pour éviter le warning
+X_grid_df = pd.DataFrame(X_grid, columns=["Sex", "Pclass", "AgeGroup"])
+
 # Prédire la probabilité de survie
-probas = model.predict_proba(X_grid)[:, 1]
+probas = model.predict_proba(X_grid_df)[:, 1]
 Proba_grid = probas.reshape(Pclass_grid.shape)
 
 # Graphique 3D
