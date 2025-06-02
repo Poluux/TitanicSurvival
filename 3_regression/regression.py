@@ -8,50 +8,50 @@ from mpl_toolkits.mplot3d import Axes3D
 import joblib
 from matplotlib import animation
 
-# Chargement des données
+# Loading data
 df = pd.read_csv("../Project 2_Titanic-Dataset.csv")
 
-# Prétraitement
+# Preprocessing
 df_model = df.copy()
 
-# Garder uniquement les colonnes nécessaires et supprimer les lignes avec des valeurs manquantes
+# Keep only necessary columns and remove rows with missing values
 df_model = df_model[["Sex", "Age", "Pclass", "Survived"]].dropna()
 
-# Encoder 'Sex' : male = 0, female = 1
+# Encode 'Sex': male = 0, female = 1
 df_model["Sex"] = df_model["Sex"].map({"male": 0, "female": 1})
 
-# Créer des tranches d'âge (tranches de 5 ans)
+# Create age groups (5-year intervals)
 df_model["AgeGroup"] = (df_model["Age"] // 5).astype(int)
 
-# Définir les variables X et y
+# Define X and y variables
 X = df_model[["Sex", "Pclass", "AgeGroup"]]
 y = df_model["Survived"]
 
-# Séparation entraînement / test
+# Train/test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Modèle de régression logistique
+# Logistic regression model
 model = LogisticRegression()
 model.fit(X_train, y_train)
 
-# Afficher l'équation du modèle
+# Display the model equation
 coef = model.coef_[0]
 intercept = model.intercept_[0]
-print("\nÉquation du modèle (logit) :")
+print("\nEquation of model (logit) :")
 print(f"logit(p) = {intercept:.4f} + ({coef[0]:.4f} * Sex) + ({coef[1]:.4f} * Pclass) + ({coef[2]:.4f} * AgeGroup)")
-print("Probabilité prédite : p = 1 / (1 + exp(-logit(p)))")
+print("Predicted probability : p = 1 / (1 + exp(-logit(p)))")
 
-# Évaluation
+# Evaluation
 y_pred = model.predict(X_test)
-print("\n--- Régression logistique avec SEX + Pclass + AgeGroup ---")
+print("\n--- Logistic regression with SEX + Pclass + AgeGroup ---")
 print(classification_report(y_test, y_pred))
 
-# === Visualisation 3D ===
+# === 3D Visualization ===
 
-# Fixer Sexe = 1 (femme). Mettre 0 pour visualiser les hommes.
+# Fix Sex = 1 (female). Set to 0 to visualize for males.
 fixed_sex = 1
 
-# Créer une grille pour Pclass (1 à 3) et AgeGroup (0 à 16 => jusqu'à 80+ ans)
+# Create a grid for Pclass (1 to 3) and AgeGroup (0 to 16 => up to 80+ years)
 pclass_range = np.arange(1, 4)
 age_group_range = np.arange(0, 17)
 
@@ -59,17 +59,17 @@ Pclass_grid, Age_grid = np.meshgrid(pclass_range, age_group_range)
 Pclass_flat = Pclass_grid.ravel()
 Age_flat = Age_grid.ravel()
 
-# Créer les entrées avec Sexe fixé
+# Create input entries with fixed sex
 X_grid = np.column_stack([np.full_like(Pclass_flat, fixed_sex), Pclass_flat, Age_flat])
 
-# Convertir en DataFrame avec les bons noms de colonnes pour éviter le warning
+# Convert to DataFrame with correct column names to avoid warning
 X_grid_df = pd.DataFrame(X_grid, columns=["Sex", "Pclass", "AgeGroup"])
 
-# Prédire la probabilité de survie
+# Predict survival probability
 probas = model.predict_proba(X_grid_df)[:, 1]
 Proba_grid = probas.reshape(Pclass_grid.shape)
 
-# Graphique 3D
+# 3D plot
 fig = plt.figure(figsize=(10, 6))
 ax = fig.add_subplot(111, projection='3d')
 ax.plot_surface(Pclass_grid, Age_grid * 5, Proba_grid, cmap="coolwarm", edgecolor='k', alpha=0.8)
@@ -83,7 +83,7 @@ plt.tight_layout()
 def rotate(angle):
     ax.view_init(elev=30, azim=angle)
  
-# Création de l'animation
+# Create animation
 ani = animation.FuncAnimation(fig, rotate, frames=np.arange(0, 360, 2), interval=100)
  
 ani.save("rotation_survival.gif", writer="pillow", fps=20)
