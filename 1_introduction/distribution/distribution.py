@@ -16,6 +16,14 @@ def displayAgeDistribution():
     plt.ylabel("Number of passengers")
     plt.xticks(range(0, 85, 5))
     plt.tight_layout()
+    
+    age_bins = pd.cut(df_age["Age"], bins=range(0, 90, 5), right=False)
+    age_counts = age_bins.value_counts().sort_index()
+
+    print("Nombre de passagers par tranche d'âge (tranches de 5 ans) :")
+    for interval, count in age_counts.items():
+        print(f"{interval}: {count}")
+
     plt.show()
 
 def displayFareDistribution():
