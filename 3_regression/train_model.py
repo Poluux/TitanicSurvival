@@ -5,6 +5,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 import joblib
 
+# This file train the model to find a regression and saves it, so we can use it in other files
+
 # Load data
 df = pd.read_csv("../Project 2_Titanic-Dataset.csv")
 

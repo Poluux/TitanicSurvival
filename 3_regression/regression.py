@@ -8,6 +8,8 @@ from mpl_toolkits.mplot3d import Axes3D
 import joblib
 from matplotlib import animation
 
+# This file finds the regression and make 3D models to visualize it
+
 # Loading data
 df = pd.read_csv("../Project 2_Titanic-Dataset.csv")
 

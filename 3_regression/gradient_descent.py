@@ -3,6 +3,8 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
+# This file computes the gradient of the regression with two methods, one with Sklearn and the other, more manual
+
 # Load and prepare data
 df = pd.read_csv("../Project 2_Titanic-Dataset.csv")
 df = df[["Sex", "Age", "Pclass", "Survived"]].dropna()

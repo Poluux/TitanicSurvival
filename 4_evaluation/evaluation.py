@@ -4,6 +4,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import joblib
 
+# This file evaluates the performance and precision of our model
+
 # Load model and test data
 model = joblib.load("../3_regression/logistic_model.joblib")
 X_test = np.load("../3_regression/X_test.npy")
