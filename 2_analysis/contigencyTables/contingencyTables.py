@@ -4,7 +4,7 @@ from tabulate import tabulate
 # This file creates contingency tables for some interesting pairs of fields
 # We can see the result both in absolute value and in percentage.
 
-df = pd.read_csv("../Project 2_Titanic-Dataset.csv")
+df = pd.read_csv("../../Project 2_Titanic-Dataset.csv")
 
 def displayContingencyTable(column1, column2):
     table = pd.crosstab(df[column1], df[column2])

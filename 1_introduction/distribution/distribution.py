@@ -5,7 +5,7 @@ import seaborn as sns
 # This file display distribution bar diagrams for all variables
 # Close a diagram will open the next one
 
-df = pd.read_csv("../Project 2_Titanic-Dataset.csv")
+df = pd.read_csv("../../Project 2_Titanic-Dataset.csv")
 
 def displayAgeDistribution():
     df_age = df.dropna(subset=["Age"])

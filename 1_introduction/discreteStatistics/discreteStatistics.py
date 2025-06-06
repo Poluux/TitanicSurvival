@@ -2,7 +2,7 @@ import pandas as pd
 
 # This file computes discrete statistics on all numerical variable.
 
-datasetFile = pd.read_csv("../Project 2_Titanic-Dataset.csv")
+datasetFile = pd.read_csv("../../Project 2_Titanic-Dataset.csv")
 
 def displayStats(datasetFile):
     print("Statistiques :\n")
